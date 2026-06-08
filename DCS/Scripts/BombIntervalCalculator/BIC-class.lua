@@ -15,7 +15,7 @@ local BicClass = {
         return self.isVisible
     end,
     setKnots        = function(self, a)
-        if not (type(a) == "number") or (a < 200) or (a > 1000) then
+        if (type(a) ~= "number") or (a < 200) or (a > 1000) then
             return false
         end
         self.knots = a
