@@ -1,5 +1,5 @@
 local DEBUG = true
-local IS_VISIBLE = false
+local IS_VISIBLE = true
 local cLfs = require("lfs")
 
 local LL = {
@@ -105,7 +105,7 @@ end
 
 --[[ Funktionen für Callbacks und Fensterverwaltung ]]
 
-local function create_callbacks(LF, cDialogLoader, cSkin, Ui)
+local function create_callbacks(LF, cDialogLoader, cSkin, Ui, cBICclass)
     local cb = {}
     local oBicWindow
 
@@ -127,17 +127,28 @@ local function create_callbacks(LF, cDialogLoader, cSkin, Ui)
 
         if IS_VISIBLE then
             oBicWindow:setSkin(cSkin.windowSkinChatMin())
+			oBicWindow:setHasCursor(false)
 			IS_VISIBLE = false
 			switch_window_children()
 			dbg_log(LF, LL.info, "Window Switch: non visible")
         else
             oBicWindow:setSkin(cSkin.windowSkin())
+			oBicWindow:setHasCursor(true)
             IS_VISIBLE = true
 			switch_window_children()
 			dbg_log(LF, LL.info, "Window Switch: visible")
         end
 
     end
+
+	local function on_calculate()
+		local TAS = oBicWindow:findByName("inputTAS"):getText()
+		local DISTANCE = oBicWindow:findByName("inputDist"):getText()
+		local BCOUNT = oBicWindow:findByName("inputBombs"):getText()
+		dbg_log(LF, LL.info, "ClassValues:\n"..tostring(TAS).." kn"
+				..tostring(DISTANCE).." nm\n"
+				..tostring(BCOUNT).. " Count")
+	end
 
     local function init_window()
 
@@ -167,6 +178,13 @@ local function create_callbacks(LF, cDialogLoader, cSkin, Ui)
 		local oCloseButton = oBicWindow:findByName("closeButton")
 		dbg_log(LF, LL.info, "addChangeCallback: "..tostring(oCloseButton.addChangeCallback))
 		oCloseButton:addChangeCallback(switch_window)
+
+		local oInputTAS = oBicWindow:findByName("inputTAS")
+		dbg_log(LF, LL.info, "getText: " .. tostring(oInputTAS.getText))
+		dbg_log(LF, LL.info, "addFocusCallback: " .. tostring(oInputTAS.addFocusCallback))
+
+		local oCalculateButton = oBicWindow:findByName("calcButton")
+		oCalculateButton:addChangeCallback(on_calculate)
 
 		switch_window()
     	dbg_log(LF, LL.info, "switch_window_children done")

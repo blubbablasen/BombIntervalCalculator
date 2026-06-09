@@ -157,7 +157,7 @@ cUtil.chk_require(F.Log, OK, cUtil.LogLevel.crit, "cBICclass")
 --   F.Ui          : Pfad zur .dlg-Datei mit der UI-Definition
 -- Der Einfachheit halber wird die zurückgegebene Tabelle direkt
 -- "callbacks" genannt.
-local callbacks = cUtil.create_callbacks(F.Log, cDialogLoader, cSkin, F.Ui)
+local callbacks = cUtil.create_callbacks(F.Log, cDialogLoader, cSkin, F.Ui, cBICclass)
 
 
 --[[ ---------- 10. CALLBACKS BEI DCS REGISTRIEREN ---------- ]]
