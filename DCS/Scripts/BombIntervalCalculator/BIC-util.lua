@@ -143,18 +143,30 @@ local function create_callbacks(LF, cDialogLoader, cSkin, Ui)
 
     	oBicWindow = cDialogLoader.spawnDialogFromFile(Ui)
     	dbg_log(LF, LL.info, "oBicWindow: " .. tostring(oBicWindow))
-    	
+
 		oBicWindow:setVisible(true)
     	dbg_log(LF, LL.info, "setVisible done")
-    	
-		oBicWindow:addHotKeyCallback("left shift+left ctrl+b", switch_window())
+
+    	-- addHotKeyCallback registriert eine Funktion die DCS aufruft,
+		-- sobald die angegebene Tastenkombination gedrückt wird.
+		-- Erster Parameter  : die Tastenkombination als String
+		-- Zweiter Parameter : die Funktion die aufgerufen werden soll
+		--
+		-- WICHTIG: switch_window ohne Klammern!
+		-- Mit Klammern (switch_window()) würde die Funktion SOFORT ausgeführt
+		-- und das Ergebnis (nil) als Callback übergeben – der Hotkey würde
+		-- nie funktionieren.
+		-- Ohne Klammern (switch_window) wird die Funktion selbst übergeben
+		-- und erst beim Tastendruck ausgeführt.
+		oBicWindow:addHotKeyCallback("left shift+left ctrl+b", switch_window)
     	dbg_log(LF, LL.info, "switch_window done")
-    	
+
 		oBicWindow:setSkin(cSkin.windowSkinChatMin())
     	dbg_log(LF, LL.info, "setSkin done")
 
 		local oCloseButton = oBicWindow:findByName("closeButton")
 		dbg_log(LF, LL.info, "addChangeCallback: "..tostring(oCloseButton.addChangeCallback))
+		oCloseButton:addChangeCallback(switch_window)
 
 		switch_window()
     	dbg_log(LF, LL.info, "switch_window_children done")
