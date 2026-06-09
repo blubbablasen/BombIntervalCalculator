@@ -167,6 +167,7 @@ local callbacks = cUtil.create_callbacks(F.Log, cDialogLoader, cSkin, F.Ui)
 -- Ab diesem Zeitpunkt reagiert DCS auf die im Modul registrierten
 -- Callbacks – z.B. wird onSimulationStart aufgerufen, sobald der
 -- Pilot einen Slot einnimmt, und baut dann das UI-Fenster auf.
+---@diagnostic disable-next-line: undefined-global
 DCS.setUserCallbacks(callbacks)
 
 

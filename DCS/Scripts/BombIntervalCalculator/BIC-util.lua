@@ -114,7 +114,7 @@ local function create_callbacks(LF, cDialogLoader, cSkin, Ui)
     	"labelResult", "outputResult", "calcButton", "closeButton",
 	}
 
-	local function children_switch()
+	local function switch_window_children()
 
 		for _, name in ipairs(CHILDREN) do
 			dbg_log(LF, LL.info, name)
@@ -123,25 +123,19 @@ local function create_callbacks(LF, cDialogLoader, cSkin, Ui)
 
 	end
 
-    local function window_switch()
+    local function switch_window()
 
         if IS_VISIBLE then
             oBicWindow:setSkin(cSkin.windowSkinChatMin())
 			IS_VISIBLE = false
-			children_switch()
+			switch_window_children()
 			dbg_log(LF, LL.info, "Window Switch: non visible")
         else
             oBicWindow:setSkin(cSkin.windowSkin())
             IS_VISIBLE = true
-			children_switch()
+			switch_window_children()
 			dbg_log(LF, LL.info, "Window Switch: visible")
         end
-
-    end
-
-    local function on_hotkey()
-
-        window_switch()
 
     end
 
@@ -153,14 +147,17 @@ local function create_callbacks(LF, cDialogLoader, cSkin, Ui)
 		oBicWindow:setVisible(true)
     	dbg_log(LF, LL.info, "setVisible done")
     	
-		oBicWindow:addHotKeyCallback("left shift+left ctrl+b", on_hotkey)
-    	dbg_log(LF, LL.info, "hotkey done")
+		oBicWindow:addHotKeyCallback("left shift+left ctrl+b", switch_window())
+    	dbg_log(LF, LL.info, "switch_window done")
     	
 		oBicWindow:setSkin(cSkin.windowSkinChatMin())
     	dbg_log(LF, LL.info, "setSkin done")
-    	
-		children_switch()
-    	dbg_log(LF, LL.info, "children_switch done")
+
+		local oCloseButton = oBicWindow:findByName("closeButton")
+		dbg_log(LF, LL.info, "addChangeCallback: "..tostring(oCloseButton.addChangeCallback))
+
+		switch_window()
+    	dbg_log(LF, LL.info, "switch_window_children done")
 
 end
 
