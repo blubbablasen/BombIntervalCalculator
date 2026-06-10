@@ -19,9 +19,9 @@ local cLfs = require("lfs")
 local cInput = require("Input")
 
 --[[
-    LL = LogLevel-Tabelle.
+    LogLevel-Tabelle.
     Strings statt Zahlen, damit die Logdatei menschenlesbar bleibt.
-    Statt `dbg_log(LogFile, 1, "...")` schreibt man `dbg_log(LogFile, LL.info, "...")`.
+    Statt `dbg_log(LogFile, 1, "...")` schreibt man `dbg_log(LogFile, LogLevel.info, "...")`.
 ]]
 local LogLevel = {
     info = "info",
@@ -139,8 +139,8 @@ end
     Schreibt eine formatierte Logzeile in die Logdatei.
 
     Parameter:
-        LogFile      – Pfad zur Logdatei (String).
-        LEVEL   – LogLevel aus LL ("info" | "warn" | "crit").
+        LogFile – Pfad zur Logdatei (String).
+        LEVEL   – LogLevel ("info" | "warn" | "crit").
         MESSAGE – Beliebiger Inhalt (wird via tostring gewandelt).
 
     Rückgabe:
@@ -211,9 +211,9 @@ end
     Wrapper, der das Ergebnis eines `require()`-Aufrufs loggt.
 
     Parameter:
-        LogFile      – Logfile-Pfad (String).
+        LogFile – Logfile-Pfad (String).
         OK      – true, wenn require erfolgreich; sonst false.
-        LEVEL   – LogLevel für den Fehlerfall (z.B. LL.crit).
+        LEVEL   – LogLevel ("info" | "warn" | "crit").
         MODULE  – Logischer Name des Moduls (nur für die Logzeile).
 
     Verhalten:
@@ -278,7 +278,7 @@ end
     zurück, die DCS bei Bedarf aufruft.
 
     Parameter:
-        LogFile             – Logfile-Pfad (wird an alle Subfunktionen
+        LogFile        – Logfile-Pfad (wird an alle Subfunktionen
                          durchgereicht, damit diese unabhängig vom
                          Hook-Kontext loggen können).
         cDialogLoader  – Modul, das .dlg-Dateien in Dialog-Objekte
