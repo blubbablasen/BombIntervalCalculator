@@ -457,13 +457,6 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
 
 		else
 
-            -- Doppelte Prüfung: Früher-Rücksprung, falls zwischen dem
-            -- äußeren if-Check und hier ein zweiter Focus-Event käme.
-            -- In der Praxis sehr unwahrscheinlich, aber defensiv korrekt.
-			if KEYBOARDLOCK then
-				return
-        	end
-
             -- Alle Tasten der angeschlossenen Tastatur holen.
 	        local keyboardEvents = cInput.getDeviceKeys(cInput.getKeyboardDeviceName())
             -- DCS-Aktionsumgebung: Enthält alle bekannten UI-Aktionen inkl.
