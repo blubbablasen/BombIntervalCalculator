@@ -141,7 +141,7 @@ cUtil.chk_require(F.Log, OK, cUtil.LogLevel.warn, "cSkin")
 
 -- BIC-Class: eigene Datenklasse. Hier ist ein Fehler kritisch, weil
 -- die Berechnungslogik ohne sie nicht funktioniert. chk_require mit
--- LL.crit sorgt dafür, dass das Script bei Fehlschlag beendet wird.
+-- LogLevel.crit sorgt dafür, dass das Script bei Fehlschlag beendet wird.
 OK, cBICclass = pcall(require, "BIC-Class")
 cUtil.chk_require(F.Log, OK, cUtil.LogLevel.crit, "cBICclass")
 
