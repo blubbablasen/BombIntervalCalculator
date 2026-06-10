@@ -188,9 +188,6 @@ local function dbg_log(LogFile, LEVEL, MESSAGE)
 		))
 	end
 
-	LOG:flush()
-	LOG:close()
-
 	if LEVEL == LogLevel.crit then
 		LOG:write(("\n>> :%s ::%s :::%s"):format(
 		os.date(),
@@ -201,6 +198,9 @@ local function dbg_log(LogFile, LEVEL, MESSAGE)
 		LOG:close()
 		os.exit(1)
 	end
+
+    LOG:flush()
+	LOG:close()
 
 	return true
 end
