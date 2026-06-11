@@ -323,6 +323,12 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
 		closeButton = "closeButton",
 	}
 
+    local ERROR_CHILDS = {
+        errorTAS = "errorTAS",
+        errorDist = "errorDist",
+        errorBombs = "errorBombs",
+    }
+
     --[[
         switch_window_children()
         ----------------------------------------------------------------
@@ -405,15 +411,23 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
             inputDist  – Abwurfabstand in Nautischen Meilen
             inputBombs – Anzahl der Bomben
     ]]
+    local function set_error(name, state)
+        oBicWindow:findByName(name):setVisible(state)
+    end
+
 	local function on_calculate()
-        -- Texte direkt aus den UI-Elementen holen; getText() gibt immer
-        -- einen String zurück, auch wenn das Feld leer ist.
-		local TAS = oBicWindow:findByName("inputTAS"):getText()
-		local DISTANCE = oBicWindow:findByName("inputDist"):getText()
-		local BCOUNT = oBicWindow:findByName("inputBombs"):getText()
-		dbg_log(LogFile, LogLevel.info, "ClassValues:\n"..tostring(TAS).." kn"
-				..tostring(DISTANCE).." nm\n"
-				..tostring(BCOUNT).. " Count")
+        local okTAS = cBICclass:setKnots(oBicWindow:findByName(CHILDS.inputTAS):getText())
+        set_error(ERROR_CHILDS.errorTAS, not okTAS)
+        local okDist = cBICclass:setDistance(oBicWindow:findByName(CHILDS.inputDist):getText())
+        set_error(ERROR_CHILDS.errorDist, not okDist)
+        local okBombs = cBICclass:setBombCount(oBicWindow:findByName(CHILDS.inputBombs):getText())
+        set_error(ERROR_CHILDS.errorBombs, not okBombs)
+
+        if not okTAS or not okDist or not okBombs then
+            return
+        end
+
+        cBICclass:calculate()
 	end
 
     --[[

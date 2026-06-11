@@ -45,12 +45,20 @@ dialog = {
         ["inputTAS"] = {
             ["type"] = "EditBox",
             ["params"] = {
-                ["bounds"]  = { ["x"] = 160, ["y"] = 10, ["w"] = 120, ["h"] = 20 },
+                ["bounds"]  = { ["x"] = 160, ["y"] = 10, ["w"] = 100, ["h"] = 20 },
                 ["text"]    = "",
                 ["numeric"] = true,
                 ["visible"] = true,
             },
             ["skin"] = { ["params"] = { ["name"] = "editBoxNew" } },
+        },
+        ["errorTAS"] = {
+            ["type"] = "Static",
+            ["params"] = {
+                ["bounds"]  = { ["x"] = 263, ["y"] = 10, ["w"] = 15, ["h"] = 20 },
+                ["text"]    = "!",
+                ["visible"] = false,
+            },
         },
 
         -- Strecke Eingabe
@@ -65,12 +73,20 @@ dialog = {
         ["inputDist"] = {
             ["type"] = "EditBox",
             ["params"] = {
-                ["bounds"]  = { ["x"] = 160, ["y"] = 40, ["w"] = 80, ["h"] = 20 },
+                ["bounds"]  = { ["x"] = 160, ["y"] = 40, ["w"] = 68, ["h"] = 20 },
                 ["text"]    = "",
                 ["numeric"] = true,
                 ["visible"] = true,
             },
             ["skin"] = { ["params"] = { ["name"] = "editBoxNew" } },
+        },
+        ["errorDist"] = {
+            ["type"] = "Static",
+            ["params"] = {
+                ["bounds"]  = { ["x"] = 231, ["y"] = 40, ["w"] = 12, ["h"] = 20 },
+                ["text"]    = "!",
+                ["visible"] = false,
+            },
         },
         ["unitButton"] = {
             ["type"] = "Button",
@@ -94,12 +110,20 @@ dialog = {
         ["inputBombs"] = {
             ["type"] = "EditBox",
             ["params"] = {
-                ["bounds"]  = { ["x"] = 160, ["y"] = 70, ["w"] = 120, ["h"] = 20 },
+                ["bounds"]  = { ["x"] = 160, ["y"] = 70, ["w"] = 100, ["h"] = 20 },
                 ["text"]    = "",
                 ["numeric"] = true,
                 ["visible"] = true,
             },
             ["skin"] = { ["params"] = { ["name"] = "editBoxNew" } },
+        },
+        ["errorBombs"] = {
+            ["type"] = "Static",
+            ["params"] = {
+                ["bounds"]  = { ["x"] = 263, ["y"] = 70, ["w"] = 15, ["h"] = 20 },
+                ["text"]    = "!",
+                ["visible"] = false,
+            },
         },
 
         -- Ausgabe
