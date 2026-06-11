@@ -412,22 +412,56 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
             inputBombs – Anzahl der Bomben
     ]]
     local function set_error(name, state)
+
         oBicWindow:findByName(name):setVisible(state)
+
     end
 
 	local function on_calculate()
-        local okTAS = cBICclass:setKnots(oBicWindow:findByName(CHILDS.inputTAS):getText())
+
+        local okTAS = cBICclass:setKnots(
+            tonumber(
+                oBicWindow:findByName(
+                    CHILDS.inputTAS
+                ):getText()
+            )
+        )
         set_error(ERROR_CHILDS.errorTAS, not okTAS)
-        local okDist = cBICclass:setDistance(oBicWindow:findByName(CHILDS.inputDist):getText())
+        dbg_log(LogFile, LogLevel.info, "TAS: "..tostring(cBICclass:getKnots()))
+
+        local okDist = cBICclass:setDistance(
+            tonumber(
+                oBicWindow:findByName(
+                    CHILDS.inputDist
+                ):getText()
+            ), oBicWindow:findByName(
+                CHILDS.unitButton
+            ):getText()
+        )
         set_error(ERROR_CHILDS.errorDist, not okDist)
-        local okBombs = cBICclass:setBombCount(oBicWindow:findByName(CHILDS.inputBombs):getText())
+        dbg_log(LogFile, LogLevel.info, "Distance: "..tostring(cBICclass:getDistance())..tostring(cBICclass:getUnit()))
+
+        local okBombs = cBICclass:setBombCount(
+            tonumber(
+                oBicWindow:findByName(
+                    CHILDS.inputBombs
+                ):getText()
+            )
+        )
         set_error(ERROR_CHILDS.errorBombs, not okBombs)
+        dbg_log(LogFile, LogLevel.info, "Bombs: "..tostring(cBICclass:getBombCount()))
 
         if not okTAS or not okDist or not okBombs then
             return
         end
 
-        cBICclass:calculate()
+        oBicWindow:findByName(
+            CHILDS.outputResult
+        ):setText(
+            string.format(
+                "%.2f", cBICclass:calculate()
+            )
+        )
 	end
 
     --[[
@@ -600,8 +634,6 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
 		dbg_log(LogFile, LogLevel.info, "oInputBCOUNT:addFocusCallback: "..tostring(oInputBCOUNT.addFocusCallback))
 		dbg_log(LogFile, LogLevel.info, "oInputBCOUNT: Callback :addFocusCallback für keyboard_input registriert")
 
-        -- Alle Kinder initial auf IS_VISIBLE=false setzen → Startzustand versteckt.
-		switch_window_children()
 
 end
 

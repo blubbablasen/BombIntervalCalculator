@@ -6,11 +6,14 @@ local BicClass = {
     interval        = 0,        --integer min 0.05s, max 10.00s
 
     setKnots        = function(self, a)
+
         if (type(a) ~= "number") or (a < 200) or (a > 1000) then
             return false
         end
         self.knots = a
+        return true
     end,
+
     getKnots        = function(self)
         return self.knots
     end,
@@ -42,6 +45,7 @@ local BicClass = {
             return false
         end
         self.disUnit = a
+        return true
     end,
 
     getUnit         = function(self)
@@ -49,10 +53,11 @@ local BicClass = {
     end,
 
     setBombCount    = function(self, a)
-        if type(a) ~= "number" or a < 2 or a > 21 then
+        if (type(a) ~= "number") or (a < 2) or (a > 21) then
             return false
         end
         self.bombCount = a
+        return true
     end,
 
     getBombCount    = function(self)
@@ -70,7 +75,7 @@ local BicClass = {
         elseif self.disUnit == "ft" then
             interval = (self.distance / (self.knots * 6076.12)) * 3600
         end
-        self.interval = math.floor(interval / (self.bombCount - 1))
+        self.interval = math.floor((interval / (self.bombCount - 1)) * 100 + 0.5) / 100
         return self.interval
     end,
 }

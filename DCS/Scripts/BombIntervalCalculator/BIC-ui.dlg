@@ -39,7 +39,7 @@ dialog = {
             ["params"] = {
                 ["bounds"] = { ["x"] = 10, ["y"] = 10, ["w"] = 120, ["h"] = 20 },
                 ["text"]    = "True Airspeed (kts):",
-                ["visible"] = true,
+                ["visible"] = false,
             },
         },
         ["inputTAS"] = {
@@ -48,7 +48,7 @@ dialog = {
                 ["bounds"]  = { ["x"] = 160, ["y"] = 10, ["w"] = 100, ["h"] = 20 },
                 ["text"]    = "",
                 ["numeric"] = true,
-                ["visible"] = true,
+                ["visible"] = false,
             },
             ["skin"] = { ["params"] = { ["name"] = "editBoxNew" } },
         },
@@ -67,7 +67,7 @@ dialog = {
             ["params"] = {
                 ["bounds"] = { ["x"] = 10, ["y"] = 40, ["w"] = 120, ["h"] = 20 },
                 ["text"]    = "Distance:",
-                ["visible"] = true,
+                ["visible"] = false,
             },
         },
         ["inputDist"] = {
@@ -76,7 +76,8 @@ dialog = {
                 ["bounds"]  = { ["x"] = 160, ["y"] = 40, ["w"] = 68, ["h"] = 20 },
                 ["text"]    = "",
                 ["numeric"] = true,
-                ["visible"] = true,
+                ["acceptDecimalPoint"] = true,
+                ["visible"] = false,
             },
             ["skin"] = { ["params"] = { ["name"] = "editBoxNew" } },
         },
@@ -93,7 +94,7 @@ dialog = {
             ["params"] = {
                 ["bounds"]  = { ["x"] = 245, ["y"] = 40, ["w"] = 45, ["h"] = 20 },
                 ["text"]    = "nm",
-                ["visible"] = true,
+                ["visible"] = false,
             },
             ["skin"] = { ["params"] = { ["name"] = "buttonSkinAwacs" } },
         },
@@ -104,7 +105,7 @@ dialog = {
             ["params"] = {
                 ["bounds"] = { ["x"] = 10, ["y"] = 70, ["w"] = 120, ["h"] = 20 },
                 ["text"]    = "Number of Bombs:",
-                ["visible"] = true,
+                ["visible"] = false,
             },
         },
         ["inputBombs"] = {
@@ -113,7 +114,7 @@ dialog = {
                 ["bounds"]  = { ["x"] = 160, ["y"] = 70, ["w"] = 100, ["h"] = 20 },
                 ["text"]    = "",
                 ["numeric"] = true,
-                ["visible"] = true,
+                ["visible"] = false,
             },
             ["skin"] = { ["params"] = { ["name"] = "editBoxNew" } },
         },
@@ -132,7 +133,7 @@ dialog = {
             ["params"] = {
                 ["bounds"] = { ["x"] = 10, ["y"] = 110, ["w"] = 120, ["h"] = 20 },
                 ["text"]    = "Interval (sec):",
-                ["visible"] = true,
+                ["visible"] = false,
             },
         },
         ["outputResult"] = {
@@ -140,7 +141,7 @@ dialog = {
             ["params"] = {
                 ["bounds"] = { ["x"] = 160, ["y"] = 110, ["w"] = 120, ["h"] = 20 },
                 ["text"]    = "---",
-                ["visible"] = true,
+                ["visible"] = false,
             },
         },
 
@@ -150,7 +151,7 @@ dialog = {
             ["params"] = {
                 ["bounds"]  = { ["x"] = 10, ["y"] = 170, ["w"] = 120, ["h"] = 24 },
                 ["text"]    = "Calculate",
-                ["visible"] = true,
+                ["visible"] = false,
             },
             ["skin"] = { ["params"] = { ["name"] = "buttonSkinAwacs" } },
         },
@@ -159,7 +160,7 @@ dialog = {
             ["params"] = {
                 ["bounds"]  = { ["x"] = 170, ["y"] = 170, ["w"] = 120, ["h"] = 24 },
                 ["text"]    = "Close",
-                ["visible"] = true,
+                ["visible"] = false,
             },
             ["skin"] = { ["params"] = { ["name"] = "buttonSkinAwacs" } },
         },
