@@ -310,17 +310,21 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
     -- stehen hier zentral. Neue Felder müssen nur hier eingetragen werden,
     -- switch_window_children() iteriert automatisch darüber.
 	local CHILDS = {
-    	labelTAS = "labelTAS",
-		inputTAS = "inputTAS",
-		labelDist = "labelDist",
-		inputDist = "inputDist",
-        unitButton = "unitButton",
-		labelBombs = "labelBombs",
-		inputBombs = "inputBombs",
-		labelResult = "labelResult",
+    	labelTAS     = "labelTAS",
+		inputTAS     = "inputTAS",
+		hintTAS      = "hintTAS",
+		labelDist    = "labelDist",
+		inputDist    = "inputDist",
+        unitButton   = "unitButton",
+		hintDistNm   = "hintDistNm",
+		hintDistFt   = "hintDistFt",
+		labelBombs   = "labelBombs",
+		inputBombs   = "inputBombs",
+		hintBombs    = "hintBombs",
+		labelResult  = "labelResult",
 		outputResult = "outputResult",
-		calcButton = "calcButton",
-		closeButton = "closeButton",
+		calcButton   = "calcButton",
+		closeButton  = "closeButton",
 	}
 
     local ERROR_CHILDS = {
@@ -353,6 +357,13 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
 		for key, name in pairs(CHILDS) do
     		oBicWindow:findByName(name):setVisible(IS_VISIBLE)
 		end
+
+        -- Dist-Hints sind gegenseitig exklusiv: nur den aktiven einblenden.
+        if IS_VISIBLE then
+            local currentUnit = oBicWindow:findByName(CHILDS.unitButton):getText()
+            oBicWindow:findByName(CHILDS.hintDistNm):setVisible(currentUnit == "nm")
+            oBicWindow:findByName(CHILDS.hintDistFt):setVisible(currentUnit == "ft")
+        end
 
 	end
 
@@ -549,8 +560,12 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
         local oUnitButton = oBicWindow:findByName(CHILDS.unitButton)
         if oUnitButton:getText() == "nm" then
             oUnitButton:setText("ft")
+            oBicWindow:findByName(CHILDS.hintDistNm):setVisible(false)
+            oBicWindow:findByName(CHILDS.hintDistFt):setVisible(true)
         else
             oUnitButton:setText("nm")
+            oBicWindow:findByName(CHILDS.hintDistNm):setVisible(true)
+            oBicWindow:findByName(CHILDS.hintDistFt):setVisible(false)
         end
     end
     --[[
