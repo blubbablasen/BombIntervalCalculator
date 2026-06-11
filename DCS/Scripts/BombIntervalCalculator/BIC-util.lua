@@ -353,10 +353,16 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
 
 		dbg_log(LogFile, LogLevel.info, "switch_window_children")
         -- Alle Kindelemente auf den aktuellen Sichtbarkeitsstatus setzen.
-        -- key wird nicht genutzt, name ist der .dlg-Element-Name.
-		for key, name in pairs(CHILDS) do
+		for _, name in pairs(CHILDS) do
     		oBicWindow:findByName(name):setVisible(IS_VISIBLE)
 		end
+
+        -- Error-Marker nur beim Verstecken zurücksetzen, nie automatisch einblenden.
+        if not IS_VISIBLE then
+            for _, name in pairs(ERROR_CHILDS) do
+                oBicWindow:findByName(name):setVisible(false)
+            end
+        end
 
         -- Dist-Hints sind gegenseitig exklusiv: nur den aktiven einblenden.
         if IS_VISIBLE then
@@ -463,6 +469,7 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
         dbg_log(LogFile, LogLevel.info, "Bombs: "..tostring(cBICclass:getBombCount()))
 
         if not okTAS or not okDist or not okBombs then
+            oBicWindow:findByName(CHILDS.outputResult):setText("Invalid input")
             return
         end
 
@@ -619,7 +626,6 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
 		dbg_log(LogFile, LogLevel.info, "oCloseButton: Callback :addChangeCallback für switch_window registriert")
 
         -- Berechnen-Button: Klick liest Eingabefelder aus und startet
-        -- die (noch zu implementierende) Intervall-Berechnung.
 		local oCalculateButton = oBicWindow:findByName("calcButton")
 		oCalculateButton:addChangeCallback(on_calculate)
 		dbg_log(LogFile, LogLevel.info, "oCalculateButton:addChangeCallback: "..tostring(oCalculateButton.addChangeCallback))
@@ -686,6 +692,7 @@ end
 			oBicWindow:setVisible(false)
 			oBicWindow:destroy()
 			oBicWindow = nil
+            KEYBOARDLOCK = false
 		end
 
     end
