@@ -2,7 +2,7 @@ local VERSION = "Bomb Interval Calculator v1.0.0 (2026-06-11)"
 -- Wenn true, werden auch LogLevel[1] (info)-Einträge in die Logdatei
 -- geschrieben. Im Release auf false setzen, damit die Datei klein bleibt.
 -- Nur warn und crit werden dann noch geloggt.
-local DEBUG = true
+local DEBUG = false
 
 -- Gibt an ob das BIC-Fenster gerade sichtbar ist (true) oder versteckt
 -- (false). Startet mit false, weil das Fenster beim Laden unsichtbar ist.
