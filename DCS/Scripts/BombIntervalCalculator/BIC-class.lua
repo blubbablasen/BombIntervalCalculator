@@ -4,6 +4,7 @@ local BicClass = {
     distance        = 0,        --integer
     disUnit         = "nm",     --string ft or nm
     bombCount       = 0,        --integer min 2
+    interval        = 0,        --integer
 
     setVisible      = function(self, a)
         if (type(a) ~= "boolean") then
@@ -49,6 +50,19 @@ local BicClass = {
     end,
     getBombCount    = function(self)
         return self.bombCount
+    end,
+    getInterval     = function(self)
+        return self.interval
+    end,
+    calculate = function(self)
+        local interval = 0
+        if self.disUnit == "nm" then
+            interval = (self.distance / self.knots) * 3600
+        elseif self.disUnit == "ft" then
+            interval = (self.distance / (self.knots * 6076.12)) * 3600
+        end
+        self.interval = math.floor(interval / (self.bombCount - 1))
+        return self.interval
     end,
 }
 
