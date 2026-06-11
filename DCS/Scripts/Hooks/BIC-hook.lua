@@ -132,18 +132,18 @@ cUtil.log_rotate(F.Log)
 -- Fehler hier sind "warn" – das Script kann theoretisch weiterlaufen,
 -- allerdings wird das UI dann nicht funktionieren.
 OK, cDialogLoader = pcall(require, "DialogLoader")
-cUtil.chk_require(F.Log, OK, cUtil.LogLevel.warn, "DialogLoader")
+cUtil.chk_require(F.Log, OK, cUtil.LogLevel[2], "DialogLoader")
 
 -- Skin: DCS-Modul mit vordefinierten Skins. Wir brauchen es für den
 -- Skin-Trick (sichtbar ↔ unsichtbar). Auch "warn" bei Fehler.
 OK, cSkin = pcall(require, "Skin")
-cUtil.chk_require(F.Log, OK, cUtil.LogLevel.warn, "cSkin")
+cUtil.chk_require(F.Log, OK, cUtil.LogLevel[2], "cSkin")
 
 -- BIC-Class: eigene Datenklasse. Hier ist ein Fehler kritisch, weil
 -- die Berechnungslogik ohne sie nicht funktioniert. chk_require mit
 -- LogLevel.crit sorgt dafür, dass das Script bei Fehlschlag beendet wird.
 OK, cBICclass = pcall(require, "BIC-Class")
-cUtil.chk_require(F.Log, OK, cUtil.LogLevel.crit, "cBICclass")
+cUtil.chk_require(F.Log, OK, cUtil.LogLevel[3], "cBICclass")
 
 
 --[[ ---------- 9. CALLBACKS ERZEUGEN ---------- ]]
@@ -176,4 +176,4 @@ DCS.setUserCallbacks(callbacks)
 -- Bestätigung in die Logdatei schreiben. Damit ist im Log klar
 -- erkennbar, dass die Initialisierung komplett durchgelaufen ist
 -- und DCS die Callbacks kennt.
-cUtil.dbg_log(F.Log, cUtil.LogLevel.info, "Callbacks registriert.")
+cUtil.dbg_log(F.Log, cUtil.LogLevel[1], "Callbacks registriert.")

@@ -10,7 +10,7 @@ dialog = {
         ["draggable"]  = true,
         ["modal"]      = false,
         ["resizable"]  = false,
-        ["text"]       = "Bomb Interval Calculator",
+        ["text"]       = "",
     },
     ["skin"] = {
         ["params"] = { ["name"] = "windowSkin" },
@@ -42,21 +42,6 @@ dialog = {
                 ["visible"] = false,
             },
         },
-        ["errorTAS"] = {
-            ["type"] = "Static",
-            ["params"] = {
-                ["bounds"]  = { ["x"] = 143, ["y"] = 10, ["w"] = 14, ["h"] = 20 },
-                ["text"]    = "!",
-                ["visible"] = false,
-            },
-            ["skin"] = {
-                ["states"] = {
-                    ["released"] = {
-                        [1] = { ["text"] = { ["color"] = "0xffff0000" } }
-                    }
-                }
-            },
-        },
         ["inputTAS"] = {
             ["type"] = "EditBox",
             ["params"] = {
@@ -83,21 +68,6 @@ dialog = {
                 ["bounds"] = { ["x"] = 10, ["y"] = 55, ["w"] = 120, ["h"] = 20 },
                 ["text"]    = "Distance:",
                 ["visible"] = false,
-            },
-        },
-        ["errorDist"] = {
-            ["type"] = "Static",
-            ["params"] = {
-                ["bounds"]  = { ["x"] = 143, ["y"] = 55, ["w"] = 14, ["h"] = 20 },
-                ["text"]    = "!",
-                ["visible"] = false,
-            },
-            ["skin"] = {
-                ["states"] = {
-                    ["released"] = {
-                        [1] = { ["text"] = { ["color"] = "0xffff0000" } }
-                    }
-                }
             },
         },
         ["inputDist"] = {
@@ -144,21 +114,6 @@ dialog = {
                 ["bounds"] = { ["x"] = 10, ["y"] = 100, ["w"] = 120, ["h"] = 20 },
                 ["text"]    = "Number of Bombs:",
                 ["visible"] = false,
-            },
-        },
-        ["errorBombs"] = {
-            ["type"] = "Static",
-            ["params"] = {
-                ["bounds"]  = { ["x"] = 143, ["y"] = 100, ["w"] = 14, ["h"] = 20 },
-                ["text"]    = "!",
-                ["visible"] = false,
-            },
-            ["skin"] = {
-                ["states"] = {
-                    ["released"] = {
-                        [1] = { ["text"] = { ["color"] = "0xffff0000" } }
-                    }
-                }
             },
         },
         ["inputBombs"] = {
