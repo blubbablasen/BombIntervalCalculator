@@ -455,13 +455,12 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
             return
         end
 
-        oBicWindow:findByName(
-            CHILDS.outputResult
-        ):setText(
-            string.format(
-                "%.2f", cBICclass:calculate()
-            )
-        )
+        local RESULT = cBICclass:calculate()
+         if RESULT == false then
+        oBicWindow:findByName(CHILDS.outputResult):setText("Invalid interval")
+            return
+        end
+        oBicWindow:findByName(CHILDS.outputResult):setText(string.format("%.2f", RESULT))
 	end
 
     --[[

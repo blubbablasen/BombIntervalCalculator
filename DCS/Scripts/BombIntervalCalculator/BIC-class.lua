@@ -76,6 +76,11 @@ local BicClass = {
             interval = (self.distance / (self.knots * 6076.12)) * 3600
         end
         self.interval = math.floor((interval / (self.bombCount - 1)) * 100 + 0.5) / 100
+
+        if (self.interval < 0.05) or (self.interval > 10.00) then
+            return false
+        end
+
         return self.interval
     end,
 }
