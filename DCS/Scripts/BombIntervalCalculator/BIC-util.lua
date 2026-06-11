@@ -314,6 +314,7 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
 		inputTAS = "inputTAS",
 		labelDist = "labelDist",
 		inputDist = "inputDist",
+        unitButton = "unitButton",
 		labelBombs = "labelBombs",
 		inputBombs = "inputBombs",
 		labelResult = "labelResult",
@@ -497,6 +498,14 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
         end
     end
 
+    local function switch_unit()
+        local oUnitButton = oBicWindow:findByName(CHILDS.unitButton)
+        if oUnitButton:getText() == "nm" then
+            oUnitButton:setText("ft")
+        else
+            oUnitButton:setText("nm")
+        end
+    end
     --[[
         init_window()
         ----------------------------------------------------------------
@@ -566,6 +575,11 @@ local function create_callbacks(LogFile, cDialogLoader, cSkin, Ui, cBICclass)
 		oInputDIS:addFocusCallback(keyboard_input)
 		dbg_log(LogFile, LogLevel.info, "oInputDIS:addFocusCallback: "..tostring(oInputDIS.addFocusCallback))
 		dbg_log(LogFile, LogLevel.info, "oInputDIS: Callback :addFocusCallback für keyboard_input registriert")
+
+        local oUnitButton = oBicWindow:findByName(CHILDS.unitButton)
+        oUnitButton:addChangeCallback(switch_unit)
+        dbg_log(LogFile, LogLevel.info, "oUnitButton:addChangeCallback: "..tostring(oUnitButton.addChangeCallback))
+        dbg_log(LogFile, LogLevel.info, "oUnitButton: Callback :addChangeCallback für switch_unit registriert")
 
 		local oInputBCOUNT = oBicWindow:findByName(CHILDS.inputBombs)
 		oInputBCOUNT:addFocusCallback(keyboard_input)
