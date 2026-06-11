@@ -10,7 +10,7 @@ und prüft alle Getter/Setter auf erfolgreiche und fehlgeschlagene Fälle.
 -- require sucht die Datei im package.path und führt sie aus.
 -- Der Rückgabewert von require ist das, was die Datei am Ende zurückgibt
 -- (also der Wert hinter dem optionalen return am Ende der Datei).
-local BicClass = require("BIC-class")
+local cBicClass = require("BIC-class")
 
 -- Eine Instanz der Klasse erzeugen.
 -- Da BIC-class.lua aktuell die Felder direkt am Klassen-Table definiert,
@@ -18,7 +18,7 @@ local BicClass = require("BIC-class")
 -- teilt sich aber die Funktionsdefinitionen (die mit self arbeiten).
 local function newInstance()
     local obj = {}
-    for k, v in pairs(BicClass) do
+    for k, v in pairs(cBicClass) do
         obj[k] = v
     end
     return obj

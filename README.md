@@ -43,8 +43,9 @@ verteilt auf `(n − 1)` Intervalle:
 
 ### Gültiger Ausgabebereich
 
-`0,05 s` bis `100,00 s` – das sind die Hardware-Grenzen des
-INTRVL-Reglers der F-4E, abgelesen am Regler im Cockpit. Werte außerhalb
+`0,05 s` bis `10,00 s` – das sind die Hardware-Grenzen des
+INTRVL-Reglers der F-4E. Der Regler läuft von 0,05 s bis 1,00 s; ein
+Schalter multipliziert den Wert mit 10 (max. 10,00 s). Werte außerhalb
 dieses Bereichs werden vom BIC erkannt und entsprechend markiert.
 
 ---

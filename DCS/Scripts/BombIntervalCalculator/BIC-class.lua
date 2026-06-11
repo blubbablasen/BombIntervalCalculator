@@ -1,20 +1,10 @@
 local BicClass = {
-    isVisible       = false,    --boolean
     knots           = 0,        --integer min 200 max 1000
-    distance        = 0,        --integer
+    distance        = 0,        --integer min 0.1nm, max 2.0nm 
     disUnit         = "nm",     --string ft or nm
     bombCount       = 0,        --integer min 2
-    interval        = 0,        --integer
+    interval        = 0,        --integer min 0.05s, max 10.00s
 
-    setVisible      = function(self, a)
-        if (type(a) ~= "boolean") then
-            return false
-        end
-        self.isVisible = a
-    end,
-    getVisible      = function(self)
-        return self.isVisible
-    end,
     setKnots        = function(self, a)
         if (type(a) ~= "number") or (a < 200) or (a > 1000) then
             return false

@@ -58,19 +58,28 @@ dialog = {
             ["type"] = "Static",
             ["params"] = {
                 ["bounds"] = { ["x"] = 10, ["y"] = 40, ["w"] = 120, ["h"] = 20 },
-                ["text"]    = "Distance (nm or ft):",
+                ["text"]    = "Distance:",
                 ["visible"] = true,
             },
         },
         ["inputDist"] = {
             ["type"] = "EditBox",
             ["params"] = {
-                ["bounds"]  = { ["x"] = 160, ["y"] = 40, ["w"] = 120, ["h"] = 20 },
+                ["bounds"]  = { ["x"] = 160, ["y"] = 40, ["w"] = 80, ["h"] = 20 },
                 ["text"]    = "",
-                ["numeric"] = false,
+                ["numeric"] = true,
                 ["visible"] = true,
             },
             ["skin"] = { ["params"] = { ["name"] = "editBoxNew" } },
+        },
+        ["unitButton"] = {
+            ["type"] = "Button",
+            ["params"] = {
+                ["bounds"]  = { ["x"] = 245, ["y"] = 40, ["w"] = 45, ["h"] = 20 },
+                ["text"]    = "nm",
+                ["visible"] = true,
+            },
+            ["skin"] = { ["params"] = { ["name"] = "buttonSkinAwacs" } },
         },
 
         -- Bombenanzahl Eingabe
