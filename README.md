@@ -77,7 +77,7 @@ and two buttons:
 
 | Message            | Meaning                                             |
 |--------------------|-----------------------------------------------------|
-| `0.00 – 10.00`     | Valid interval in seconds (2 decimal places)        |
+| `0.05 – 10.00`     | Valid interval in seconds (2 decimal places)        |
 | `Invalid input`    | At least one field is empty or out of range         |
 | `Invalid interval` | Inputs are valid but result is outside 0.05–10.00 s |
 
