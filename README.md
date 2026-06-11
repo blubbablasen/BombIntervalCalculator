@@ -1,196 +1,211 @@
-# 💣 Bomb Interval Calculator (BIC)
+# Bomb Interval Calculator (BIC)
 
-Ein Lua-Mod für den **Digital Combat Simulator (DCS)**, speziell für die
-**F-4E Phantom II**. Berechnet das Abwurfintervall für ungelenkte Bomben
-(z. B. Mk-82) anhand von True Airspeed, Streckenlänge und Bombenanzahl –
-direkt im Cockpit, ohne externen Rechner.
-
----
-
-## 🎯 Zweck
-
-Wer in DCS mit der F-4E einen Bombenteppich legen will, muss am
-**INTRVL-Regler** im Cockpit ein Intervall in Sekunden einstellen. Welcher
-Wert der richtige ist, hängt von drei Faktoren ab:
-
-| Faktor          | Einheit      | Quelle im Cockpit           |
-|-----------------|--------------|------------------------------|
-| True Airspeed   | Knoten (kts) | TAS-Anzeige                  |
-| Streckenlänge   | nm oder ft   | Missionsplanung / Karten     |
-| Bombenanzahl    | Stück        | Beladung des Flugzeugs       |
-
-Diese Werte tippt man normalerweise vor dem Start in einen externen
-Taschenrechner (oder eine App) und überträgt das Ergebnis dann ins
-Cockpit. Der BIC erledigt das **während des Flugs** über ein kleines
-DCS-Fenster, das per Hotkey ein- und ausgeblendet wird.
+A Lua mod for **Digital Combat Simulator (DCS)**, specifically for the
+**F-4E Phantom II**. Calculates the release interval for unguided bombs
+(e.g. Mk-82) based on true airspeed, target distance, and bomb count —
+directly in the cockpit, without an external calculator.
 
 ---
 
-## 🧮 Die Formel
+## Purpose
 
-Die zugrundeliegende Berechnung ist die simpel Weg-Zeit-Gleichung,
-verteilt auf `(n − 1)` Intervalle:
+When flying a carpet bombing run in DCS with the F-4E, the
+**INTRVL knob** in the cockpit must be set to a release interval in
+seconds. The correct value depends on three factors:
+
+| Factor         | Unit         | Source in cockpit             |
+|----------------|--------------|-------------------------------|
+| True Airspeed  | Knots (kts)  | TAS indicator                 |
+| Target distance| nm or ft     | Mission planning / maps       |
+| Number of bombs| Count        | Aircraft loadout              |
+
+Normally these values are entered into an external calculator before
+takeoff and the result is then transferred to the cockpit. BIC does
+this **during flight** via a small DCS window toggled by hotkey.
+
+---
+
+## Formula
+
+The underlying calculation is the simple distance-time equation
+distributed across `(n − 1)` intervals:
 
 ```
 Δt = (d / v) × 3600 / (n − 1)
 ```
 
-- `d` = Streckenlänge in **Seemeilen** (nm)  
-  (Eingabe in ft wird intern umgerechnet: `d_nm = d_ft / 6076`)
-- `v` = True Airspeed in **Knoten**
-- `n` = Anzahl der Bomben (mindestens 2, sonst Division durch 0)
-- `Δt` = Abwurfintervall in **Sekunden**
+- `d` = target distance in **nautical miles** (nm)  
+  (ft input is converted internally: `d_nm = d_ft / 6076.12`)
+- `v` = true airspeed in **knots**
+- `n` = number of bombs (minimum 2, otherwise division by zero)
+- `Δt` = release interval in **seconds**
 
-### Gültiger Ausgabebereich
+### Valid output range
 
-`0,05 s` bis `10,00 s` – das sind die Hardware-Grenzen des
-INTRVL-Reglers der F-4E. Der Regler läuft von 0,05 s bis 1,00 s; ein
-Schalter multipliziert den Wert mit 10 (max. 10,00 s). Werte außerhalb
-dieses Bereichs werden vom BIC erkannt und entsprechend markiert.
+`0.05 s` to `10.00 s` — these are the hardware limits of the F-4E's
+INTRVL knob. The knob runs from 0.05 s to 1.00 s; a switch multiplies
+the value by 10 (max. 10.00 s). Values outside this range are detected
+by BIC and reported in the output field.
 
 ---
 
-## 🖥️ Das UI
+## The UI
 
-Das Fenster (300 × 220 px) enthält drei Eingabefelder, ein Ausgabefeld
-und zwei Buttons:
+The window (300 × 240 px) contains three input fields, one output field,
+and two buttons:
 
 ```
-┌─ Bomb Interval Calculator ─────────────┐
-│  True Airspeed (kts): [         ]      │
-│  Distance (nm or ft): [         ]      │
-│  Number of Bombs:     [         ]      │
-│                                        │
-│  Interval (sec):       [         ]     │
-│                                        │
-│  [ Calculate ]            [ Close ]    │
-└────────────────────────────────────────┘
+┌─ Bomb Interval Calculator ───────────────────┐
+│  True Airspeed (kts): [     ]  200 - 1000    │
+│  Distance:            [     ][nm] 0.1 - 2.0  │
+│  Number of Bombs:     [     ]  2 - 21        │
+│                                              │
+│  Interval (sec):      [          ]           │
+│                                              │
+│  [ Calculate ]            [ Close ]          │
+└──────────────────────────────────────────────┘
 ```
 
-- **Calculate** liest die Eingaben, validiert sie und schreibt das
-  Ergebnis in das Ausgabefeld.
-- **Close** versteckt das Fenster (Skin-Trick, siehe unten).
-- Sichtbarkeit wird per **Hotkey getoggelt**: `Left Shift + Left Ctrl + B`
+- **Calculate** reads the inputs, validates them, and writes the result
+  to the output field.
+- **Close** hides the window (skin trick, see below).
+- The unit button toggles between **nm** and **ft**; the range hint
+  below the distance field updates accordingly.
+- Visibility is toggled by hotkey: `Left Shift + Left Ctrl + B`
+
+### Output field messages
+
+| Message            | Meaning                                             |
+|--------------------|-----------------------------------------------------|
+| `0.00 – 10.00`     | Valid interval in seconds (2 decimal places)        |
+| `Invalid input`    | At least one field is empty or out of range         |
+| `Invalid interval` | Inputs are valid but result is outside 0.05–10.00 s |
 
 ---
 
-## 🪟 Der Skin-Trick
+## The Skin Trick
 
-DCS deaktiviert Hotkey-Callbacks, sobald man ein Dialog-Fenster mit
-`setVisible(false)` versteckt. Die Lösung stammt aus dem
-[ScratchPad-Projekt](https://github.com/rkusa/dcs-scratchpad):
+DCS deactivates hotkey callbacks as soon as a dialog window is hidden
+with `setVisible(false)`. The solution is borrowed from the
+[ScratchPad project](https://github.com/rkusa/dcs-scratchpad):
 
-1. Beim Start wird das Fenster erzeugt (`spawnDialogFromFile`)
-2. Per `setSkin(cSkin.windowSkinChatMin())` wird der Skin auf eine
-   **transparente Chat-Minimized-Variante** gesetzt
-3. Alle Kind-Elemente werden über `findByName()` einzeln auf
-   `setVisible(false)` gesetzt
-4. Der Hotkey schaltet zwischen `windowSkin()` (sichtbar) und
-   `windowSkinChatMin()` (unsichtbar) hin und her
+1. On startup the window is created (`spawnDialogFromFile`)
+2. `setSkin(cSkin.windowSkinChatMin())` switches to a
+   **transparent chat-minimized skin**
+3. All child elements are individually hidden via `findByName()` +
+   `setVisible(false)`
+4. The hotkey toggles between `windowSkin()` (visible) and
+   `windowSkinChatMin()` (invisible)
 
-So bleibt das Fenster-Objekt technisch "lebendig" und der Hotkey
-funktioniert weiterhin – auch über lange Missionen hinweg.
+This keeps the window object technically "alive" so hotkeys continue to
+work throughout long missions.
 
 ---
 
-## 📁 Projektstruktur
+## Project Structure
 
 ```
 DCS/
 └── Scripts/
     ├── Hooks/
-    │   └── BIC-hook.lua                # Einstiegspunkt, registriert Callbacks bei DCS
+    │   └── BIC-hook.lua                # Entry point, registers callbacks with DCS
     └── BombIntervalCalculator/
-        ├── BIC-util.lua                # Logging, Pfadprüfung, Callback-Bau, Fensterverwaltung
-        ├── BIC-class.lua               # Datenobjekt mit Setter/Getter für Berechnungswerte
-        ├── BIC-ui.dlg                  # DCS Dialog-Definition für das UI-Fenster
-        └── testing.lua                 # Manuelle Tests der BIC-Klasse
+        ├── BIC-util.lua                # Logging, path checks, callback factory, window management
+        ├── BIC-class.lua               # Data object with setters/getters and calculate()
+        ├── BIC-ui.dlg                  # DCS dialog definition for the UI window
+        └── testing.lua                 # Manual tests for the BIC class
 ```
 
-### Rollen der Dateien
+### File roles
 
-| Datei          | Aufgabe                                                                     |
-|----------------|------------------------------------------------------------------------------|
-| `BIC-hook.lua` | Wird von DCS geladen. Lädt Module, prüft Pfade/Dateien, registriert Callbacks. |
-| `BIC-util.lua` | Logging, Pfadprüfung, Log-Rotation, Aufbau der Callbacks inkl. Hotkey/Skin-Trick. |
-| `BIC-class.lua`| Datenklasse mit validierenden Settern für TAS, Distanz, Einheit, Bombenanzahl. |
-| `BIC-ui.dlg`   | Statische Beschreibung des Fensters, der Eingabefelder und Buttons.         |
-| `testing.lua`  | Standalone-Testskript (außerhalb DCS) für die Setter/Getter der Klasse.      |
+| File           | Purpose                                                                           |
+|----------------|-----------------------------------------------------------------------------------|
+| `BIC-hook.lua` | Loaded by DCS. Loads modules, checks paths/files, registers callbacks.            |
+| `BIC-util.lua` | Logging, path checks, log rotation, callback factory including hotkey/skin trick. |
+| `BIC-class.lua`| Data class with validating setters for TAS, distance, unit, and bomb count.       |
+| `BIC-ui.dlg`   | Static description of the window, input fields, and buttons.                      |
+| `testing.lua`  | Standalone test script (outside DCS) for class setters/getters.                   |
 
 ---
 
-## 🔧 Namenskonventionen
+## Naming Conventions
 
-Das Projekt folgt einem kleinen, aber konsequenten Schema:
+The project follows a small but consistent scheme:
 
-| Schreibweise     | Bedeutung                                         |
-|------------------|----------------------------------------------------|
-| `GROSSBUCHSTABEN` | Einfache Typen / Werte (Strings, Numbers, Booleans) |
-| `cModul`         | Geladene Module via `require` (z. B. `cUtil`, `cDialogLoader`) |
-| `oObjekt`        | Instanzen / Objekte (z. B. `oBicWindow`)           |
-| `LF`             | Kurzform für LogFile-Pfad (Argument an Funktionen) |
-| `LL`             | LogLevel-Tabelle (`info`, `warn`, `crit`)          |
-| `F`              | Files-Tabelle mit Pfaden (`F.Log`, `F.Ui`, `F.Class`) |
-
----
-
-## 🪵 Logging
-
-- Standardpfad: `%USERPROFILE%\Saved Games\DCS\Logs\bic.log`
-- Drei Level: `info` (nur bei `DEBUG = true`), `warn`, `crit`
-- Beim Start wird eine vorhandene `bic.log` zu `bic.log.old` rotiert,
-  damit die Datei nicht endlos wächst
-- `crit`-Meldungen beenden das Script sofort
-
-Format jeder Zeile:
-```
->> :<Datum+Uhrzeit> ::<LEVEL> :::<MESSAGE>
-```
+| Style             | Meaning                                                      |
+|-------------------|--------------------------------------------------------------|
+| `UPPERCASE`       | Simple types / values (strings, numbers, booleans)           |
+| `cModule`         | Modules loaded via `require` (e.g. `cUtil`, `cDialogLoader`) |
+| `oObject`         | Instances / objects (e.g. `oBicWindow`)                      |
+| `LF`              | Short for LogFile path (argument to functions)               |
+| `LL`              | LogLevel table (`info`, `warn`, `crit`)                      |
+| `F`               | Files table with paths (`F.Log`, `F.Ui`, `F.Class`)          |
 
 ---
 
-## 🚀 Installation
+## Logging
 
-1. Den Ordner `DCS/Scripts/` aus diesem Repository in dein
-   DCS-Benutzerverzeichnis kopieren:
+- Default path: `%USERPROFILE%\Saved Games\DCS\Logs\bic.log`
+- Three levels: `info` (only when `DEBUG = true`), `warn`, `crit`
+- On startup an existing `bic.log` is rotated to `bic.log.old` to
+  prevent the file from growing indefinitely
+- `crit` entries terminate the script immediately
+
+Format of each log line:
+```
+>> :<date+time> ::<LEVEL> :::<MESSAGE>
+```
+
+---
+
+## Installation
+
+1. Copy the `DCS/Scripts/` folder from this repository into your
+   DCS user directory:
    ```
    %USERPROFILE%\Saved Games\DCS\Scripts\
    ```
-2. Sicherstellen, dass der Pfad
+2. Make sure the path
    `%USERPROFILE%\Saved Games\DCS\Scripts\BombIntervalCalculator\`
-   existiert und die vier Dateien (`BIC-util.lua`, `BIC-class.lua`,
-   `BIC-ui.dlg`, `testing.lua`) enthält.
-3. DCS starten, eine Mission mit F-4E laden, einen Slot besetzen.
-4. Das BIC-Fenster wird beim Slot-Betreten automatisch erzeugt und ist
-   bereit.
-5. Hotkey **Left Shift + Left Ctrl + B** schaltet das Fenster ein/aus.
+   exists and contains the four files (`BIC-util.lua`, `BIC-class.lua`,
+   `BIC-ui.dlg`, `testing.lua`).
+3. Start DCS, load a mission with an F-4E, and take a slot.
+4. The BIC window is created automatically when entering the slot and is
+   ready to use.
+5. Hotkey **Left Shift + Left Ctrl + B** toggles the window on/off.
 
 ---
 
-## 🧪 Testen außerhalb von DCS
+## Testing Outside DCS
 
-Die Datenklasse kann unabhängig vom Spiel getestet werden, sofern
-Lua 5.1 installiert ist:
+The data class can be tested independently of the game, provided
+Lua 5.1 is installed:
 
 ```bash
 lua DCS/Scripts/BombIntervalCalculator/testing.lua
 ```
 
-Das Skript erzeugt zwei Instanzen der Klasse, ruft alle Setter/Getter
-mit gültigen und ungültigen Werten auf und gibt am Ende
-`Alle Tests bestanden.` aus, falls alle `assert`-Aufrufe durchgehen.
+The script creates two instances of the class, calls all setters/getters
+with valid and invalid values, and prints `All tests passed.` at the end
+if all `assert` calls succeed.
 
 ---
 
-## 📚 Verweise & Inspiration
+## References & Inspiration
 
-- [DCS ScratchPad Hook](https://raw.githubusercontent.com/rkusa/dcs-scratchpad/refs/heads/main/Scripts/Hooks/scratchpad-hook.lua) – Vorlage für den Skin-Trick
-- [DCS ScratchPad UI](https://raw.githubusercontent.com/rkusa/dcs-scratchpad/refs/heads/main/Scripts/Scratchpad/ScratchpadWindow.dlg) – Vorlage für die `.dlg`-Definition
-- DCS-Wiki zu `DialogLoader`, `Skin`, `DCS.setUserCallbacks`
+- [DCS ScratchPad Hook](https://raw.githubusercontent.com/rkusa/dcs-scratchpad/refs/heads/main/Scripts/Hooks/scratchpad-hook.lua) — template for the skin trick
+- [DCS ScratchPad UI](https://raw.githubusercontent.com/rkusa/dcs-scratchpad/refs/heads/main/Scripts/Scratchpad/ScratchpadWindow.dlg) — template for the `.dlg` definition
+- DCS Wiki on `DialogLoader`, `Skin`, `DCS.setUserCallbacks`
 
 ---
 
-## ⚖️ Lizenz
+## License
 
-Lizenz steht noch aus. Bis dahin: **All rights reserved** durch den
-Autor. Vorschläge gerne als Issue.
+This project is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
+
+You are free to use, copy, modify, and distribute this software, provided that
+any derivative work is also released under the same GPL-3.0 license and its
+source code is made available.
+
+See the [LICENSE](LICENSE) file for the full license text, or visit
+https://www.gnu.org/licenses/gpl-3.0.html
