@@ -1,4 +1,4 @@
-local VERSION = "Bomb Interval Calculator v1.0.0 (2026-06-11)"
+local VERSION = "Bomb Interval Calculator v1.0.1 (2026-06-12)"
 -- Wenn true, werden auch LogLevel[1] (info)-Einträge in die Logdatei
 -- geschrieben. Im Release auf false setzen, damit die Datei klein bleibt.
 -- Nur warn und crit werden dann noch geloggt.

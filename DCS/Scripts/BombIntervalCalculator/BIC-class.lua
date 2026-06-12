@@ -1,13 +1,13 @@
 local BicClass = {
-    knots           = 0,        --integer min 200 max 1000
+    knots           = 0,        --integer min 200 max 750
     distance        = 0,        --integer min 0.1nm, max 2.0nm  - min 650ft, max 12500ft
     disUnit         = "nm",     --string ft or nm
-    bombCount       = 0,        --integer min 2
+    bombCount       = 0,        --integer min 2, max 24
     interval        = 0,        --integer min 0.05s, max 10.00s
 
     setKnots        = function(self, a)
 
-        if (type(a) ~= "number") or (a < 200) or (a > 1000) then
+        if (type(a) ~= "number") or (a < 200) or (a > 750) then
             return false
         end
         self.knots = a
@@ -53,7 +53,7 @@ local BicClass = {
     end,
 
     setBombCount    = function(self, a)
-        if (type(a) ~= "number") or (a < 2) or (a > 21) then
+        if (type(a) ~= "number") or (a < 2) or (a > 24) then
             return false
         end
         self.bombCount = a

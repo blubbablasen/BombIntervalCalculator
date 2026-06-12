@@ -3,7 +3,7 @@
 A Lua mod for **Digital Combat Simulator (DCS)**, specifically for the
 **F-4E Phantom II**. Calculates the release interval for unguided bombs
 (e.g. Mk-82) based on true airspeed, target distance, and bomb count —
-directly in the cockpit, without an external calculator.
+as part of pre-flight mission planning, without an external calculator.
 
 ---
 
@@ -19,9 +19,11 @@ seconds. The correct value depends on three factors:
 | Target distance| nm or ft     | Mission planning / maps       |
 | Number of bombs| Count        | Aircraft loadout              |
 
-Normally these values are entered into an external calculator before
-takeoff and the result is then transferred to the cockpit. BIC does
-this **during flight** via a small DCS window toggled by hotkey.
+In real operations these values were always calculated on the ground
+before takeoff — reliable TAS and distance figures are not available
+in the air, and historically pilots never computed this in flight.
+BIC brings that pre-flight calculation into DCS via a small window
+toggled by hotkey, so no external calculator is needed.
 
 ---
 
@@ -56,13 +58,16 @@ and two buttons:
 
 ```
 ┌─ Bomb Interval Calculator ───────────────────┐
-│  True Airspeed (kts): [     ]  200 - 1000    │
-│  Distance:            [     ][nm] 0.1 - 2.0  │
-│  Number of Bombs:     [     ]  2 - 21        │
+│  True Airspeed (kts): [     ]                |
+|                       200 - 750 kts          │
+│  Distance:            [     ] [nm]           |
+|                       0.1 - 2.0 nm           │
+│  Number of Bombs:     [     ]                |
+|                       2 - 24                 │
 │                                              │
 │  Interval (sec):      [          ]           │
 │                                              │
-│  [ Calculate ]            [ Close ]          │
+│  [ Calculate ]        [ Close ]              │
 └──────────────────────────────────────────────┘
 ```
 
@@ -79,7 +84,7 @@ and two buttons:
 |--------------------|-----------------------------------------------------|
 | `0.05 – 10.00`     | Valid interval in seconds (2 decimal places)        |
 | `Invalid input`    | At least one field is empty or out of range         |
-| `Invalid interval` | Inputs are valid but result is outside 0.05–10.00 s |
+| `Invalid interval` | Inputs are valid but result is outside 0.05 – 10.00s|
 
 ---
 
